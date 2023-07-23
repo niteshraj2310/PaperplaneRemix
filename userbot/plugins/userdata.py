@@ -130,7 +130,8 @@ async def name(event: NewMessage.Event) -> None:
 
     try:
         await client(
-            functions.account.UpdateProfileRequest(first_name=first, last_name=last)
+            functions.account.UpdateProfileRequest(
+                first_name=first, last_name=last)
         )
         n2 = get_display_name(await client.get_me())
         await event.answer(

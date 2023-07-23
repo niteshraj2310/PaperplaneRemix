@@ -63,7 +63,8 @@ bld_pattern = r"blacklisted" r"(?: |$|\n)" r"(?:(?P<match>[\s\S]*))?"
 id_pattern = re.compile(
     r"(?:https?:\/\/)?(?:www\.)?(?:t\.me\/)?@?(?P<e>\w{5,35}|-?\d{6,16})\/?"
 )
-invite_pattern = re.compile(r"(?:https?:\/\/)?(?:www\.)?t\.me\/(?P<hash>\w{22})\/?")
+invite_pattern = re.compile(
+    r"(?:https?:\/\/)?(?:www\.)?t\.me\/(?P<hash>\w{22})\/?")
 full_key_names = {
     "tgid": "Telegram IDs",
     "bio": "User Bios",
@@ -779,7 +780,8 @@ async def listbls(event: NewMessage.Event) -> None:
             if event.chat_id not in localBlacklists:
                 await event.answer("__There are no blacklists set here.__")
                 return
-            blked = getattr(localBlacklists[event.chat_id], bl_type.lower(), None)
+            blked = getattr(
+                localBlacklists[event.chat_id], bl_type.lower(), None)
             if blked:
                 if len(blked) >= index:
                     bl = blked[index]
@@ -799,7 +801,8 @@ async def listbls(event: NewMessage.Event) -> None:
                 else:
                     if event.chat_id not in localBlacklists:
                         break
-                    attr = getattr(localBlacklists[event.chat_id], option, None)
+                    attr = getattr(
+                        localBlacklists[event.chat_id], option, None)
                 if attr:
                     for v in values:
                         if v in attr:
@@ -1008,7 +1011,8 @@ async def listbld(event: NewMessage.Event) -> None:
                     and user in blacklistedUsers
                 ):
                     t, v = blacklistedUsers[entity.id]
-                    users.append(f"[{user}](tg://user?id={user}): `{t}`, `{v}`")
+                    users.append(
+                        f"[{user}](tg://user?id={user}): `{t}`, `{v}`")
                 elif not entity.is_self or not isinstance(entity, types.User):
                     skipped.append(f"`{entity.id}`")
             except Exception:
@@ -1045,7 +1049,8 @@ async def is_admin(chat_id, sender_id) -> bool:
     """Check if the sender is an admin, owner or bot"""
     try:
         result = await client(
-            functions.channels.GetParticipantRequest(channel=chat_id, user_id=sender_id)
+            functions.channels.GetParticipantRequest(
+                channel=chat_id, user_id=sender_id)
         )
         if isinstance(
             result.participant,
@@ -1116,7 +1121,8 @@ async def ban_user(
             reply_to=event,
         )
         if client.logger:
-            logger_group = client.config["userbot"].getint("logger_group_id", "me")
+            logger_group = client.config["userbot"].getint(
+                "logger_group_id", "me")
             if chat.username:
                 chat_href = f"[{chat.title}]" f"(tg://resolve?domain={chat.username})"
             else:
@@ -1215,11 +1221,12 @@ async def inc_listener(event: NewMessage.Event) -> None:
         counter = 0
         for entity in entities:
             if (
-                isinstance(entity, (types.MessageEntityMention, types.MessageEntityUrl))
+                isinstance(entity, (types.MessageEntityMention,
+                           types.MessageEntityUrl))
                 and counter <= 3
             ):
                 entity = id_pattern.search(
-                    event.text[entity.offset : entity.offset + entity.length]
+                    event.text[entity.offset: entity.offset + entity.length]
                 )
                 entity = entity.group("e") if entity else entity
                 value = await get_peer_id(entity) if entity else None

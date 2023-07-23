@@ -38,8 +38,10 @@ newdefault = (
     "`Messages Remaining:` **{remaining}**"
 )
 esc_default = re.escape(default.format(remaining=r"\d")).replace(r"\\d", r"\d")
-esc_samedefault = re.escape(samedefault.format(remaining=r"\d")).replace(r"\\d", r"\d")
-esc_newdefault = re.escape(newdefault.format(remaining=r"\d")).replace(r"\\d", r"\d")
+esc_samedefault = re.escape(samedefault.format(
+    remaining=r"\d")).replace(r"\\d", r"\d")
+esc_newdefault = re.escape(newdefault.format(
+    remaining=r"\d")).replace(r"\\d", r"\d")
 blocked = "`You've been blocked and reported for spamming.`"
 blocklog = "{} `has been blocked for spamming, unblock them to see their messages.`"
 autoapprove = "`Successfully auto-approved` {user}"
@@ -91,7 +93,8 @@ async def pm_incoming(event: NewMessage.Event) -> None:
             )
         )
 
-    lastmsg, count, sent, lastoutmsg = spammers.setdefault(sender, (None, 5, [], None))
+    lastmsg, count, sent, lastoutmsg = spammers.setdefault(
+        sender, (None, 5, [], None))
     if count == 0:
         user = await get_chat_link(entity)
         await client.delete_messages(input_entity, sent)

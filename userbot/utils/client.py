@@ -102,14 +102,16 @@ class UserBotClient(TelegramClient):
                 self.commands.update({com: UBcommand})
                 self.commandcategories.setdefault(category, []).append(com)
                 if builtin:
-                    self.commandcategories.setdefault("builtin", []).append(com)
+                    self.commandcategories.setdefault(
+                        "builtin", []).append(com)
             return func
 
         return wrapper
 
     async def get_traceback(self, exc: Exception) -> str:
         return "".join(
-            traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
+            traceback.format_exception(etype=type(
+                exc), value=exc, tb=exc.__traceback__)
         )
 
     def _updateconfig(self) -> bool:

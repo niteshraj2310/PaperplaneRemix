@@ -33,7 +33,8 @@ class RedisSession(MemorySession):
             raise TypeError("Session name must be a string or bytes.")
 
         if not redis_connection or not isinstance(redis_connection, redis.Redis):
-            raise TypeError("The given redis_connection must be a Redis instance.")
+            raise TypeError(
+                "The given redis_connection must be a Redis instance.")
 
         super().__init__()
 
@@ -44,7 +45,8 @@ class RedisSession(MemorySession):
         self._takeout_id = None
 
         self.session_name = (
-            session_name if isinstance(session_name, str) else session_name.decode()
+            session_name if isinstance(
+                session_name, str) else session_name.decode()
         )
         self.redis_connection = redis_connection
         self.sess_prefix = "telethon:session:{}".format(self.session_name)
@@ -80,7 +82,8 @@ class RedisSession(MemorySession):
             self._server_address = s.get(b"server_address").decode()
             self._port = int(s.get(b"port").decode())
             self._takeout_id = (
-                s.get(b"takeout_id").decode() if s.get(b"takeout_id", False) else None
+                s.get(b"takeout_id").decode() if s.get(
+                    b"takeout_id", False) else None
             )
 
             if s.get(b"auth_key", False):

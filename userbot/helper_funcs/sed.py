@@ -10,7 +10,8 @@ from enum import Enum
 from typing import Union
 
 caseConversions = (r"\U", r"\L", r"\E", r"\u", r"\l", r"\I", r"\F")
-endCaseConversions = {r"\U": r"\\EU", r"\L": r"\\EL", r"\I": r"\\EI", r"\F": r"\\EF"}
+endCaseConversions = {r"\U": r"\\EU",
+                      r"\L": r"\\EL", r"\I": r"\\EI", r"\F": r"\\EF"}
 
 
 class UnknownFlagError(Exception):
@@ -118,7 +119,7 @@ async def convertCharacterCase(string: str, case: str) -> str:
         start, end = match.span()
         repl = string[end]
         tmp = repl.upper() if case == r"\\u" else repl.lower()
-        string = string[: end - 2] + tmp + string[end + 1 :]
+        string = string[: end - 2] + tmp + string[end + 1:]
     return string
 
 

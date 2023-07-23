@@ -102,7 +102,8 @@ async def isRestart(client: UserBotClient) -> None:
                 del app.config()["userbot_disabled_commands"]
         else:
             await success_edit(text)
-            disabled_commands = os.environ.get("userbot_disabled_commands", False)
+            disabled_commands = os.environ.get(
+                "userbot_disabled_commands", False)
 
         if "userbot_disabled_commands" in os.environ:
             del os.environ["userbot_disabled_commands"]

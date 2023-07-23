@@ -43,7 +43,8 @@ if __name__ == "__main__":
                         f"Fixed DC ID in session from {client.session.dc_id}"
                         f" to {option.id}"
                     )
-                client.session.set_dc(option.id, option.ip_address, option.port)
+                client.session.set_dc(
+                    option.id, option.ip_address, option.port)
                 client.session.save()
                 break
         client.start()

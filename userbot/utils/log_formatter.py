@@ -60,13 +60,15 @@ class CustomPercentStyle(logging.PercentStyle):
 class CustomFormatter(logging.Formatter):
     """Update the default Formatter's _STYLES dict to use our custom one"""
 
-    _STYLES = logging._STYLES.update({"%": (CustomPercentStyle, logging.BASIC_FORMAT)})
+    _STYLES = logging._STYLES.update(
+        {"%": (CustomPercentStyle, logging.BASIC_FORMAT)})
 
     def logFormat(self, record):
         """Format a log record without ANSI escapes for dumping"""
         super().format(record)
         record.__dict__.update(levelAlias=record.levelname[:1])
-        fmt = "{asctime} [{levelAlias}] - {name}: {message}".format(**record.__dict__)
+        fmt = "{asctime} [{levelAlias}] - {name}: {message}".format(
+            **record.__dict__)
         if record.exc_text:
             fmt += f"\n{record.exc_text}"
         return fmt

@@ -154,10 +154,12 @@ async def updater(event: NewMessage.Event) -> None:
         )
         ago = (now - commit.committed_datetime).total_seconds()
         elspased = (await _humanfriendly_seconds(ago)).split(",")[0]
-        committers_link = author_link.format(author=commit.committer, url=remote_url)
+        committers_link = author_link.format(
+            author=commit.committer, url=remote_url)
         authors_link = author_link.format(author=commit.author, url=remote_url)
         if commit.author == commit.committer:
-            committed = commited.format(committer=committers_link, elapsed=elspased)
+            committed = commited.format(
+                committer=committers_link, elapsed=elspased)
         else:
             committed = authored.format(
                 author=authors_link, committer=committers_link, elapsed=elspased
@@ -212,7 +214,8 @@ async def updater(event: NewMessage.Event) -> None:
             }
             for flag in userbot_config:
                 if flag in heroku_ext_flags:
-                    app.config().update({f"ext_userbot_{flag}": userbot_config[flag]})
+                    app.config().update(
+                        {f"ext_userbot_{flag}": userbot_config[flag]})
                     app.config().update({flag: None})
 
             app.config().update(
@@ -223,7 +226,8 @@ async def updater(event: NewMessage.Event) -> None:
             )
             if event.client.disabled_commands:
                 disabled_list = ", ".join(client.disabled_commands.keys())
-                app.config().update({"userbot_disabled_commands": disabled_list})
+                app.config().update(
+                    {"userbot_disabled_commands": disabled_list})
 
             url = f"https://api:{heroku_api_key}@git.heroku.com/{app.name}.git"
             if "heroku" in repo.remotes:
@@ -239,7 +243,8 @@ async def updater(event: NewMessage.Event) -> None:
             )
             remote = repo.remotes["heroku"]
             try:
-                remote.push(refspec=f"{repo.active_branch.name}:master", force=True)
+                remote.push(
+                    refspec=f"{repo.active_branch.name}:master", force=True)
                 await event.answer("`There was nothing to push to Heroku?`")
             except git.exc.GitCommandError as command:
                 await event.answer(

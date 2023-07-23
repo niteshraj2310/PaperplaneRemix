@@ -149,7 +149,8 @@ def verifyLoggerGroup(client: UserBotClient) -> None:
         client.logger = False
 
     try:
-        entity = client.loop.run_until_complete(client.get_entity(LOGGER_CHAT_ID))
+        entity = client.loop.run_until_complete(
+            client.get_entity(LOGGER_CHAT_ID))
         if not isinstance(entity, types.User):
             if not entity.creator:
                 if entity.default_banned_rights.send_messages:
@@ -159,10 +160,13 @@ def verifyLoggerGroup(client: UserBotClient) -> None:
                     )
         client.logger = entity
     except ValueError:
-        disable_logger("Logger group ID cannot be found. " "Make sure it's correct.")
+        disable_logger(
+            "Logger group ID cannot be found. " "Make sure it's correct.")
     except TypeError:
-        disable_logger("Logger group ID is unsupported. " "Make sure it's correct.")
+        disable_logger(
+            "Logger group ID is unsupported. " "Make sure it's correct.")
     except Exception as e:
         disable_logger(
-            "An Exception occured upon trying to verify " "the logger group.\n" + str(e)
+            "An Exception occured upon trying to verify " "the logger group.\n" +
+            str(e)
         )

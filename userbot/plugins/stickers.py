@@ -127,7 +127,8 @@ async def _set_default_packs(pack_type: str, name: str) -> str:
             text = f"`Successfully changed your default animated pack to {name}!`"
     elif pack_type.lower() == "basic":
         if name.lower() in ["reset", "none"]:
-            is_pack = client.config["userbot"].get("default_sticker_pack", None)
+            is_pack = client.config["userbot"].get(
+                "default_sticker_pack", None)
             if is_pack:
                 text = "`Successfully reset your default pack!`"
                 del client.config["userbot"]["default_sticker_pack"]

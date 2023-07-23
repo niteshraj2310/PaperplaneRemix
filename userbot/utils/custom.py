@@ -106,7 +106,7 @@ async def _resolve_entities(message: str, entities: list) -> dict:
         t_chunk = message[:msg_end]
         messages.append((t_chunk, e_chunk))
         entities = entities[end:]
-        message = message[len(t_chunk) :]
+        message = message[len(t_chunk):]
         if entities:
             await _reset_entities(entities, msg_end, next_offset)
     return messages
@@ -374,5 +374,6 @@ async def resanswer(
             for chat in chat_id:
                 await self.send_message(chat, string.format(**formats), **kwargs)
         except KeyError:
-            LOGGER.warning("Invalid extra string %s found in %s resource", name, plugin)
+            LOGGER.warning(
+                "Invalid extra string %s found in %s resource", name, plugin)
     return sent

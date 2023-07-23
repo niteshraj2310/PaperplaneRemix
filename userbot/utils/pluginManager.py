@@ -25,7 +25,8 @@ from telethon import TelegramClient, events
 
 LOGGER = logging.getLogger(__name__)
 package_patern = re.compile(r"([\w-]+)(?:=|<|>|!)")
-github_patern = re.compile(r"(?:https?)?(?:www.)?(?:github.com/)?([\w\-.]+/[\w\-.]+)/?")
+github_patern = re.compile(
+    r"(?:https?)?(?:www.)?(?:github.com/)?([\w\-.]+/[\w\-.]+)/?")
 github_raw_pattern = re.compile(
     r"(?:https?)?(?:raw.)?(?:githubusercontent.com/)?([\w\-.]+/[\w\-.]+)/?"
 )
@@ -227,7 +228,8 @@ class PluginManager:
                             raw_pattern.format(repo, filen), auth=self.auth, stream=True
                         )
                     except requests.exceptions.ConnectionError:
-                        LOGGER.error(f"Failed to open {resp.url}, skipping {repo}")
+                        LOGGER.error(
+                            f"Failed to open {resp.url}, skipping {repo}")
                         break  # The plugins wouldn't load without the reqs
                     if resp.ok:
                         raw = resp.content.decode("utf-8")
@@ -261,9 +263,11 @@ class PluginManager:
                         splat = filen[:-3].rsplit("/", maxsplit=1)
                         mod_name = splat[0] if len(splat) == 1 else splat[1]
                         if mod_name in helpers:
-                            LOGGER.debug(f"Overwrote {mod_name} from {repo}/{filen}")
+                            LOGGER.debug(
+                                f"Overwrote {mod_name} from {repo}/{filen}")
                         helpers.update(
-                            {mod_name: (raw_pattern.format(repo, filen), filen)}
+                            {mod_name: (raw_pattern.format(
+                                repo, filen), filen)}
                         )
                         LOGGER.debug(f"Found {mod_name} in {repo}/{filen}!")
                     continue
@@ -274,10 +278,12 @@ class PluginManager:
                     splat = filen[:-3].rsplit("/", maxsplit=1)
                     plugin_name = splat[0] if len(splat) == 1 else splat[1]
                     if plugin_name == "builtin":
-                        LOGGER.info("Ignoring the builtin plugin, cannot overwrite it.")
+                        LOGGER.info(
+                            "Ignoring the builtin plugin, cannot overwrite it.")
                         continue
                     elif plugin_name in plugins:
-                        LOGGER.debug(f"Overwrote {plugin_name} from {repo}/{filen}")
+                        LOGGER.debug(
+                            f"Overwrote {plugin_name} from {repo}/{filen}")
                     plugins.update(
                         {plugin_name: (raw_pattern.format(repo, filen), filen)}
                     )
@@ -331,7 +337,8 @@ class PluginManager:
             LOGGER.info(log)
         except Exception as e:
             self.client.failed_imports.append(path)
-            LOGGER.error("Failed to import %s due to the error(s) below.", path)
+            LOGGER.error(
+                "Failed to import %s due to the error(s) below.", path)
             LOGGER.exception(e)
 
     def _import_helper(self, name: str, path: str, content: str) -> None:
@@ -356,7 +363,8 @@ class PluginManager:
             LOGGER.info(log)
         except Exception as e:
             self.client.failed_imports.append(path)
-            LOGGER.error("Failed to import %s due to the error(s) below.", path)
+            LOGGER.error(
+                "Failed to import %s due to the error(s) below.", path)
             LOGGER.exception(e)
 
     def import_all(self) -> None:
@@ -404,7 +412,8 @@ class PluginManager:
                 and self.exclude
                 and plugin_name in self.exclude
             ):
-                self.inactive_plugins.append(Plugin(plugin_name, [], path, None))
+                self.inactive_plugins.append(
+                    Plugin(plugin_name, [], path, None))
                 LOGGER.debug("Skipped importing %s", plugin_name)
                 continue
             self._import_plugin(name, path, content)
@@ -414,7 +423,8 @@ class PluginManager:
         for plugin in self.active_plugins:
             for callback in plugin.callbacks:
                 self.client.add_event_handler(callback.callback)
-                LOGGER.debug("Added event handler for %s.", callback.callback.__name__)
+                LOGGER.debug("Added event handler for %s.",
+                             callback.callback.__name__)
 
     def remove_handlers(self) -> None:
         """Remove event handlers to all the found callbacks."""

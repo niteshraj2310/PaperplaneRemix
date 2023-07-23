@@ -96,7 +96,8 @@ async def _update_notif_settings(
     peer: int, settings: types.InputPeerNotifySettings = DEFAULT_MUTE_SETTINGS
 ) -> None:
     await client(
-        functions.account.UpdateNotifySettingsRequest(peer=peer, settings=settings)
+        functions.account.UpdateNotifySettingsRequest(
+            peer=peer, settings=settings)
     )
 
 
@@ -133,7 +134,8 @@ async def out_listner(event: NewMessage.Event) -> None:
             await _update_notif_settings(key, value["PeerNotifySettings"])
             total_mentions += len(value["mentions"])
             msg = "  `{} total mentions from` [{}](tg://user?id={})"
-            to_log.append(msg.format(len(value["mentions"]), value["title"], key))
+            to_log.append(msg.format(
+                len(value["mentions"]), value["title"], key))
 
         pr_text = "`Received {} message{} from {} private chat{}.`".format(
             *(await _correct_grammer(total_mentions, len(AFK.privates)))

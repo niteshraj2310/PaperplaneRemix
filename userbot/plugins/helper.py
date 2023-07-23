@@ -47,7 +47,8 @@ async def setprefix(event: NewMessage.Event) -> None:
             "To revert this, do `**{0}setprefix {1}**".format(
                 client.prefix, old_prefix
             ),
-            log=("setprefix", f"prefix changed to {client.prefix} from {old_prefix}"),
+            log=("setprefix",
+                 f"prefix changed to {client.prefix} from {old_prefix}"),
         )
     client._updateconfig()
 
@@ -116,7 +117,8 @@ async def enable(event: NewMessage.Event) -> None:
     if command:
         for handler in command.handlers:
             client.add_event_handler(command.func, handler)
-        enabled_coms = ", ".join(split_exp.split(arg)) if arg in command_list else arg
+        enabled_coms = ", ".join(split_exp.split(
+            arg)) if arg in command_list else arg
         client.commands[arg] = command
         client.disabled_commands.pop(arg)
         await event.answer(
@@ -182,7 +184,7 @@ async def commands(event: NewMessage.Event) -> None:
     enabled = sorted(commands.keys())
     for i in range(0, len(enabled), chunk):
         response += "\n  "
-        response += ",\t\t".join("`" + c + "`" for c in enabled[i : i + chunk])
+        response += ",\t\t".join("`" + c + "`" for c in enabled[i: i + chunk])
     await event.answer(response)
 
 
@@ -209,7 +211,7 @@ async def disabled(event: NewMessage.Event) -> None:
     disabled = sorted(disabled_commands.keys())
     for i in range(0, len(disabled), chunk):
         response += "\n  "
-        response += ",\t\t".join("`" + c + "`" for c in disabled[i : i + chunk])
+        response += ",\t\t".join("`" + c + "`" for c in disabled[i: i + chunk])
     await event.answer(response)
 
 

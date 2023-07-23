@@ -66,7 +66,8 @@ async def fix_attributes(
 
     attributes, mime_type = get_attributes(path)
     if suffix in audioFormats:
-        title = str(info_dict.get("title", info_dict.get("id", "Unknown title")))
+        title = str(info_dict.get(
+            "title", info_dict.get("id", "Unknown title")))
         audio = types.DocumentAttributeAudio(duration, None, title, uploader)
     elif suffix in videoFormats:
         width = int(info_dict.get("width", 0))
@@ -128,7 +129,8 @@ async def yt_dl(event):
     progress = kwargs.get("progress", True)
     round_message = kwargs.get("round_message", kwargs.get("round", False))
     update = kwargs.get("update", 10)
-    supports_streaming = kwargs.get("supports_streaming", kwargs.get("stream", True))
+    supports_streaming = kwargs.get(
+        "supports_streaming", kwargs.get("stream", True))
     if not upload and auto_delete:
         await event.answer(
             "`The void doesn't make sense!\

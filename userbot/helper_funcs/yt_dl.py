@@ -123,7 +123,8 @@ class ProgressHook:
             finalStr = f"Downloaded {filen}: 100% of {ttlbyt} in {elpstr}"
             LOGGER.warning(finalStr)
             self.loop.create_task(
-                self.event.answer(f"`Successfully downloaded {filen1} in {elpstr}!`")
+                self.event.answer(
+                    f"`Successfully downloaded {filen1} in {elpstr}!`")
             )
             for task in self.tasks:
                 if not task.done():
@@ -254,7 +255,8 @@ async def extract_info(
                 os.remove(str(new_f.absolute()))
             else:
                 newname = str(old_f.stem) + "_OLD"
-                old_f.replace(old_f.with_name(newname).with_suffix(old_f.suffix))
+                old_f.replace(old_f.with_name(
+                    newname).with_suffix(old_f.suffix))
         path = new_f.parent.parent / npath
         new_f.rename(new_f.parent.parent / npath)
         thumb = str(thumb.absolute()) if thumb.exists() else None
