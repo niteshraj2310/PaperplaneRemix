@@ -107,7 +107,8 @@ class UserBotClient(TelegramClient):
 
         return wrapper
 
-    async def get_traceback(self, exc: Exception) -> str:
+    @staticmethod
+    async def get_traceback(exc: Exception) -> str:
         return "".join(
             traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
         )
