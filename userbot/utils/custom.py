@@ -62,7 +62,7 @@ async def _resolve_entities(message: str, entities: list) -> dict:
     """Don't even bother trying to figure this mess out"""
     messages = []
     while entities:
-        end = 100 if len(entities) >= 100 else len(entities)
+        end = min(len(entities), 100)
         if len(message) > MAXLIM:
             end, _ = min(
                 enumerate(entities[:end]),
@@ -190,51 +190,50 @@ async def answer(
                     )
                 except Exception as e:
                     raise e
-            else:
-                if len(msg_entities) > 100:
-                    message_out = []
-                    messages = await _resolve_entities(msg, msg_entities)
-                    chunks = [parser.unparse(t, e) for t, e in messages]
-                    try:
-                        if event and is_outgoing:
-                            first_msg = await self.edit_message(
-                                event.chat_id, event.id, chunks[0], **kwargs
-                            )
-                        else:
-                            first_msg = await self.send_message(
-                                entity, chunks[0], **kwargs, **kwargs2
-                            )
-                    except errors.rpcerrorlist.MessageIdInvalidError:
-                        first_msg = await self.send_message(
+            elif len(msg_entities) > 100:
+                messages = await _resolve_entities(msg, msg_entities)
+                chunks = [parser.unparse(t, e) for t, e in messages]
+                try:
+                    first_msg = (
+                        await self.edit_message(
+                            event.chat_id, event.id, chunks[0], **kwargs
+                        )
+                        if event and is_outgoing
+                        else await self.send_message(
                             entity, chunks[0], **kwargs, **kwargs2
                         )
+                    )
+                except errors.rpcerrorlist.MessageIdInvalidError:
+                    first_msg = await self.send_message(
+                        entity, chunks[0], **kwargs, **kwargs2
+                    )
+                except Exception as e:
+                    raise e
+                message_out = [first_msg]
+                for chunk in chunks[1:]:
+                    try:
+                        sent = await self.send_message(
+                            entity, chunk, **kwargs, **kwargs2
+                        )
+                        message_out.append(sent)
                     except Exception as e:
                         raise e
-                    message_out.append(first_msg)
-                    for chunk in chunks[1:]:
-                        try:
-                            sent = await self.send_message(
-                                entity, chunk, **kwargs, **kwargs2
-                            )
-                            message_out.append(sent)
-                        except Exception as e:
-                            raise e
-                else:
-                    try:
-                        if event and is_outgoing:
-                            message_out = await self.edit_message(
-                                event.chat_id, event.id, message, **kwargs
-                            )
-                        else:
-                            message_out = await self.send_message(
-                                entity, message, **kwargs, **kwargs2
-                            )
-                    except errors.rpcerrorlist.MessageIdInvalidError:
+            else:
+                try:
+                    if event and is_outgoing:
+                        message_out = await self.edit_message(
+                            event.chat_id, event.id, message, **kwargs
+                        )
+                    else:
                         message_out = await self.send_message(
                             entity, message, **kwargs, **kwargs2
                         )
-                    except Exception as e:
-                        raise e
+                except errors.rpcerrorlist.MessageIdInvalidError:
+                    message_out = await self.send_message(
+                        entity, message, **kwargs, **kwargs2
+                    )
+                except Exception as e:
+                    raise e
         else:
             if event and not is_forward and not is_media and is_outgoing:
                 try:
@@ -339,15 +338,15 @@ async def resanswer(
         return await self.answer(entity, message.format(**formats), **kwargs)
 
     try:
-        mod = importlib.import_module("." + plugin, package="resources")
-    except (ImportError, ModuleNotFoundError):
+        mod = importlib.import_module(f".{plugin}", package="resources")
+    except ImportError:
         return await self.answer(entity, message.format(**formats), **kwargs)
 
     if not hasattr(mod, name):
         sent = await self.answer(entity, message.format(**formats), **kwargs)
 
     strings = getattr(mod, name, [])
-    estrings = getattr(mod, name + "_extra", [])
+    estrings = getattr(mod, f"{name}_extra", [])
     strings = await resolve_strings(strings)
     estrings = await resolve_strings(estrings)
 

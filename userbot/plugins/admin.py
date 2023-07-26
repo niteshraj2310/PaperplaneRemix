@@ -95,14 +95,13 @@ async def promote(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if promoted:
-        text = "`Successfully promoted:`\n"
-        text += ", ".join(f"`{x}`" for x in promoted)
+        text = "`Successfully promoted:`\n" + ", ".join(f"`{x}`" for x in promoted)
         if title:
             text += f"\n`Title:` `{title}`"
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("promote", log_msg))
     if skipped:
         text = "`Skipped users:`"
@@ -153,12 +152,11 @@ async def demote(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if demoted:
-        text = "`Successfully demoted:`\n"
-        text += ", ".join(f"`{x}`" for x in demoted)
+        text = "`Successfully demoted:`\n" + ", ".join(f"`{x}`" for x in demoted)
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("demote", log_msg))
     if skipped:
         text = "`Skipped users:`"
@@ -209,12 +207,11 @@ async def ban(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if banned:
-        text = "`Successfully banned:`\n"
-        text += ", ".join(f"`{x}`" for x in banned)
+        text = "`Successfully banned:`\n" + ", ".join(f"`{x}`" for x in banned)
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("ban", log_msg))
     if skipped:
         text = "`Skipped users:`"
@@ -276,12 +273,11 @@ async def unban(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if unbanned:
-        text = "`Successfully unbanned:`\n"
-        text += ", ".join(f"`{x}`" for x in unbanned)
+        text = "`Successfully unbanned:`\n" + ", ".join(f"`{x}`" for x in unbanned)
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("unban", log_msg))
     if skipped:
         text = "`Skipped users:`"
@@ -332,12 +328,11 @@ async def kick(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if kicked:
-        text = "`Successfully kicked:`\n"
-        text += ", ".join(f"`{x}`" for x in kicked)
+        text = "`Successfully kicked:`\n" + ", ".join(f"`{x}`" for x in kicked)
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("kick", log_msg))
     if skipped:
         text = "`Skipped users:`"
@@ -388,12 +383,11 @@ async def mute(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if muted:
-        text = "`Successfully muted:`\n"
-        text += ", ".join(f"`{x}`" for x in muted)
+        text = "`Successfully muted:`\n" + ", ".join(f"`{x}`" for x in muted)
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("mute", log_msg))
     if skipped:
         text = "`Skipped users:`"
@@ -444,12 +438,11 @@ async def unmute(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if unmuted:
-        text = "`Successfully unmuted:`\n"
-        text += ", ".join(f"`{x}`" for x in unmuted)
+        text = "`Successfully unmuted:`\n" + ", ".join(f"`{x}`" for x in unmuted)
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("unmute", log_msg))
     if skipped:
         text = "`Skipped users:`"
@@ -510,17 +503,15 @@ async def tmute(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if tmuted:
-        text = "`Successfully tmuted:`\n"
-        text += ", ".join(f"`{x}`" for x in tmuted)
+        text = "`Successfully tmuted:`\n" + ", ".join(f"`{x}`" for x in tmuted)
         text += f"\n`Time:` `{await _humanfriendly_seconds(period)}`"
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("tmute", log_msg))
     if skipped:
-        text = "`Skipped users:`"
-        text += ", ".join(f"`{x}`" for x in skipped)
+        text = "`Skipped users:`" + ", ".join(f"`{x}`" for x in skipped)
         await event.answer(text, reply=True)
 
 
@@ -577,17 +568,15 @@ async def tban(event: NewMessage.Event) -> None:
         except Exception:
             skipped.append(user)
     if tbanned:
-        text = "`Successfully tbanned:`\n"
-        text += ", ".join(f"`{x}`" for x in tbanned)
+        text = "`Successfully tbanned:`\n" + ", ".join(f"`{x}`" for x in tbanned)
         text += f"\n`Time:` `{await _humanfriendly_seconds(period)}`"
         if reason:
             text += f"\n`Reason:` `{reason}`"
         e2 = await get_chat_link(entity, event.id)
-        log_msg = text + f"\n`Chat:` {e2}"
+        log_msg = f"{text}\n`Chat:` {e2}"
         await event.answer(text, log=("tban", log_msg))
     if skipped:
-        text = "`Skipped users:`"
-        text += ", ".join(f"`{x}`" for x in skipped)
+        text = "`Skipped users:`" + ", ".join(f"`{x}`" for x in skipped)
         await event.answer(text, reply=True)
 
 
@@ -622,5 +611,5 @@ async def pin(event: NewMessage.Event) -> None:
     except Exception:
         text = "`Failed to pin the message!`\n"
     e2 = await get_chat_link(event, event.reply_to_msg_id)
-    log_msg = text + f"`Chat:` {e2}"
+    log_msg = f"{text}`Chat:` {e2}"
     await event.answer(text, log=("pin", log_msg))

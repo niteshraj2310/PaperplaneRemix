@@ -37,8 +37,7 @@ async def setprefix(event: NewMessage.Event) -> None:
     client.config["userbot"]["userbot_prefix"] = match
     if old_prefix is None:
         await event.answer(
-            "`Successfully changed the prefix to `**{}**`. "
-            "To revert this, do `**resetprefix**".format(client.prefix),
+            f"`Successfully changed the prefix to `**{client.prefix}**`. To revert this, do `**resetprefix**",
             log=("setprefix", f"Prefix changed to {client.prefix}"),
         )
     else:
@@ -66,8 +65,7 @@ async def resetprefix(event: NewMessage.Event) -> None:
 
     `resetprefix`
     """
-    prefix = client.config["userbot"].get("userbot_prefix", None)
-    if prefix:
+    if prefix := client.config["userbot"].get("userbot_prefix", None):
         del client.config["userbot"]["userbot_prefix"]
         client.prefix = None
         await event.answer(
@@ -83,8 +81,7 @@ async def solve_commands(commands: dict) -> tuple[dict, dict]:
     new_dict: dict = {}
     com_tuples: dict = {}
     for com_names, command in commands.items():
-        splat = split_exp.split(com_names)
-        if splat:
+        if splat := split_exp.split(com_names):
             for n in splat:
                 com_tuples[n] = command
                 new_dict[" | ".join(splat)] = command
@@ -112,8 +109,7 @@ async def enable(event: NewMessage.Event) -> None:
         await event.answer("`Enable what? The void?`")
         return
     commands, command_list = await solve_commands(client.disabled_commands)
-    command = commands.get(arg, command_list.get(arg, False))
-    if command:
+    if command := commands.get(arg, command_list.get(arg, False)):
         for handler in command.handlers:
             client.add_event_handler(command.func, handler)
         enabled_coms = ", ".join(split_exp.split(arg)) if arg in command_list else arg
@@ -148,8 +144,7 @@ async def disable(event: NewMessage.Event) -> None:
         await event.answer("`Disable what? The void?`")
         return
     commands, command_list = await solve_commands(client.commands)
-    command = commands.get(arg, command_list.get(arg, False))
-    if command:
+    if command := commands.get(arg, command_list.get(arg, False)):
         if command.builtin:
             await event.answer("`Cannot disable a builtin command.`")
         else:
@@ -182,7 +177,7 @@ async def commands(event: NewMessage.Event) -> None:
     enabled = sorted(commands.keys())
     for i in range(0, len(enabled), chunk):
         response += "\n  "
-        response += ",\t\t".join("`" + c + "`" for c in enabled[i : i + chunk])
+        response += ",\t\t".join(f"`{c}`" for c in enabled[i : i + chunk])
     await event.answer(response)
 
 
@@ -209,7 +204,7 @@ async def disabled(event: NewMessage.Event) -> None:
     disabled = sorted(disabled_commands.keys())
     for i in range(0, len(disabled), chunk):
         response += "\n  "
-        response += ",\t\t".join("`" + c + "`" for c in disabled[i : i + chunk])
+        response += ",\t\t".join(f"`{c}`" for c in disabled[i : i + chunk])
     await event.answer(response)
 
 
@@ -236,11 +231,14 @@ async def helper(event: NewMessage.Event) -> None:
     if arg:
         arg = arg.lower()
         if arg in (*enabled, *disabled, *senabled, *sdisabled):
-            command = None
-            for i in (enabled, disabled, senabled, sdisabled):
-                if arg in i:
-                    command = i.get(arg)
-                    break
+            command = next(
+                (
+                    i.get(arg)
+                    for i in (enabled, disabled, senabled, sdisabled)
+                    if arg in i
+                ),
+                None,
+            )
             text = (
                 f"**Here's the info for the** `{arg}` **command:**\n\n"
                 f"• **Can be disabled:** `{'Yes' if not command.builtin else 'No'}`\n"

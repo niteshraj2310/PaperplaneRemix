@@ -31,7 +31,7 @@ class CustomPercentStyle(logging.PercentStyle):
         super().format(record)
         if self._fmt == self.default_format:
             if HEROKU:
-                first = "[%s] " % (record.levelname[:1])
+                first = f"[{record.levelname[:1]}] "
             else:
                 first = "[%(asctime)s / %(levelname)s] "
             if record.name == "root":
